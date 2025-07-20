@@ -2,18 +2,48 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alteração de Login e Senha</title>
+  <title>Primeiro Acesso</title>
   <link rel="stylesheet" href="../assets/style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-      background-color: #f4f4f4;
-    }
-    form {
-      background-color: white;
-      padding: 30px;
-      display: inline-block;
-      border-radi
+</head>
+<body>
+  <img src="../assets/logo.png" alt="Logotipo" style="max-width: 200px">
+  <h2>Primeiro Acesso – Alterar Login e Senha</h2>
+
+  <form id="formAlterar">
+    <input type="text" id="novoLogin" placeholder="Novo Login (mín. 6 caracteres)" required><br><br>
+    <input type="password" id="novaSenha" placeholder="Nova Senha (mín. 6 caracteres)" required><br><br>
+    <input type="password" id="confirmaSenha" placeholder="Confirmar Nova Senha" required><br><br>
+    <button type="submit">Salvar e Continuar</button>
+  </form>
+
+  <script>
+    document.getElementById('formAlterar').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const login = document.getElementById('novoLogin').value;
+      const senha = document.getElementById('novaSenha').value;
+      const confirma = document.getElementById('confirmaSenha').value;
+
+      if (login.length < 6) {
+        alert("O login deve ter no mínimo 6 caracteres.");
+        return;
+      }
+
+      if (senha.length < 6) {
+        alert("A senha deve ter no mínimo 6 caracteres.");
+        return;
+      }
+
+      if (senha !== confirma) {
+        alert("As senhas não coincidem.");
+        return;
+      }
+
+      localStorage.setItem('loginAdmin', login);
+      localStorage.setItem('senhaAdmin', senha);
+
+      window.location.href = "../painel_cotacoes_varejista.html";
+    });
+  </script>
+</body>
+</html>
