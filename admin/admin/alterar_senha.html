@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Alteração de Login e Senha</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <img src="../assets/logo.png" alt="Logotipo">
+  <h2>Primeiro Acesso - Alterar Login e Senha</h2>
+
+  <form onsubmit="return salvarNovaSenha()">
+    <input type="text" id="novoLogin" placeholder="Novo login (mínimo 6 caracteres)" required minlength="6"><br><br>
+    <input type="password" id="novaSenha" placeholder="Nova senha (mínimo 6 caracteres)" required minlength="6"><br><br>
+    <input type="password" id="confirmarSenha" plac
