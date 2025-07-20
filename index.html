@@ -2,18 +2,58 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Cotações</title>
   <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+      padding: 40px;
+    }
+    img {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    form {
+      margin: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #004AAD;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+    }
+    button:hover {
+      background-color: #00318C;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-  <img src="assets/logo.png" alt="Logotipo" style="max-width: 200px;">
+  <img src="assets/logo.png" alt="Logotipo">
   <h2>Bem-vindo ao Sistema de Cotações</h2>
+
   <form action="admin/login.html" method="get">
-    <button type="submit">Acessar como Admin</button>
+    <button type="submit">Acessar como Admin (Varejista)</button>
   </form>
+
   <form action="fornecedor/login.html" method="get">
     <button type="submit">Acessar como Fornecedor</button>
   </form>
+
   <footer>Versão 1.0.0</footer>
 </body>
 </html>
+
