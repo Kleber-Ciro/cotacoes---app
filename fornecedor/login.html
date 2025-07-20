@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Login Fornecedor</title>
+  <meta charset="UTF-8">
+  <title>Login - Fornecedor</title>
+  <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
-    <h1>Login do Fornecedor</h1>
-    <!-- Aqui você poderá adicionar campos de login e senha futuramente -->
+  <img src="../assets/logo.png" alt="Logotipo">
+  <h2>Login do Fornecedor</h2>
+
+  <form onsubmit="return validarLoginFornecedor()">
+    <input type="text" id="codigoOuEmail" placeholder="Código do Fornecedor ou E-mail" required><br><br>
+    <input type="password" id="senha" placeholder="Senha" required minlength="6"><br><br>
+    <button type="submit">Entrar</button>
+  </form>
+
+  <br>
+  <a href="../cadastro_usuario_configurado.html">Criar primeiro acesso</a>
+  <p id="mensagem"></p>
+
+  <script>
+    function validarLoginFornecedor() {
+      const usuario = document.getElementById('codigoOuEmail').value;
+      const senha = document.getElementById('senha').value;
+
+      if (usuario && senha.length >= 6) {
+        alert("Login bem-sucedido!");
+        window.location.href = "../formulario_fornecedor.html";
+        return false;
+      } else {
+        document.getElementById('mensagem').innerText = "Preencha corretamente todos os campos.";
+        return false;
+      }
+    }
+  </script>
 </body>
 </html>
