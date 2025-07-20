@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Cotações - Varejista</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+        .menor-preco {
+            background-color: #c8f7c5;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Painel de Cotações - Comparativo por Produto</h2>
+    <div id="tabela-container">Carregando dados...</div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyDxxxxxxx-xxxxxxxxxxxxxxxxxx",
+            authDomain: "cotacoes---konect.firebaseapp.com",
+            databaseURL: "https://cotacoes---konect-default-rtdb.firebaseio.com",
+            projectId: "cotacoes---konect",
+            storageBucket: "cotacoes---konect.appspot.com",
+            messagingSenderId: "123456789000",
+            appId: "1:123456789000:web:abcdefg1234567"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+        database.ref("cotacoes").once("value").then((snapshot) => {
+            var dados = snapshot.val();
+            if (!dados) {
+                document.getElementById("tabela-container").innerText = "Nenhuma cotação registrada.";
+                return;
+            }
+
+            // Organizar cotações por produto
+            var produtosMap = {};
+            for (let key in dados) {
+                let cotacao = dados[key];
+                let p = cotacao.produto;
+                let produtoNome = p.nome.toLowerCase();
+                if (!produtosMap[produtoNome]) {
+                    produtosMap[produtoNome] = [];
+                }
+                produtosMap[produtoNome].push({
+                    fornecedor: cotacao.fornecedor,
+                    marca: p.marca,
+                    embalagem: p.embalagem,
+                    quantidade: p.quantidade,
+                    valor: parseFloat(p.valor),
+                    data: cotacao.data,
+                    vendedor: cotacao.vendedor,
+                    fone: cotacao.fone
+                });
+            }
+
+            let html = "";
+            for (let produto in produtosMap) {
+                let cotacoes = produtosMap[produto];
+                let menorPreco = Math.min(...cotacoes.map(c => c.valor));
+
+                html += "<h3>Produto: " + produto.toUpperCase() + "</h3>";
+                html += "<table><tr><th>Fornecedor</th><th>Marca</th><th>Embalagem</th><th>Qtd</th><th>Valor</th><th>Data</th><th>Vendedor</th><th>Fone</th></tr>";
+
+                cotacoes.forEach(c => {
+                    let destaque = c.valor === menorPreco ? "menor-preco" : "";
+                    html += `<tr class="${destaque}">
+                        <td>${c.fornecedor}</td>
+                        <td>${c.marca}</td>
+                        <td>${c.embalagem}</td>
+                        <td>${c.quantidade}</td>
+                        <td>R$ ${c.valor.toFixed(2)}</td>
+                        <td>${c.data}</td>
+                        <td>${c.vendedor}</td>
+                        <td>${c.fone}</td>
+                    </tr>`;
+                });
+
+                html += "</table><br>";
+            }
+
+            document.getElementById("tabela-container").innerHTML = html;
+        });
+    </script>
+</body>
+</html>

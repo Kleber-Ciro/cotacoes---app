@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Produtos - Varejista</title>
+</head>
+<body>
+    <h2>Cadastro de Produtos para Cotação</h2>
+    <form id="produtoForm">
+        <label>Descrição do Produto:<br><input type="text" id="descricao" required></label><br><br>
+        <label>Embalagem (kg/unidade):<br><input type="text" id="embalagem" required></label><br><br>
+        <label>Marca:<br><input type="text" id="marca" required></label><br><br>
+        <label>Quantidade:<br><input type="number" id="quantidade" required></label><br><br>
+        <button type="submit">Cadastrar Produto</button>
+    </form>
+
+    <p id="status"></p>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        // CONFIGURAÇÃO DO FIREBASE
+        var firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "cotacoes---konect.firebaseapp.com",
+            databaseURL: "https://cotacoes---konect-default-rtdb.firebaseio.com",
+            projectId: "cotacoes---konect",
+            storageBucket: "cotacoes---konect.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+        // ENVIO DO FORMULÁRIO
+        document.getElementById("produtoForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            var descricao = document.getElementById("descricao").value;
+            var embalagem = document.getElementById("embalagem").value;
+            var marca = document.getElementById("marca").value;
+            var quantidade = document.getElementById("quantidade").value;
+
+            var novoProduto = {
+                descricao: descricao,
+                embalagem: embalagem,
+                marca: marca,
+                quantidade: quantidade
+            };
+
+            database.ref("produtos").push(novoProduto)
+                .then(() => {
+                    document.getElementById("status").innerText = "Produto cadastrado com sucesso!";
+                    document.getElementById("produtoForm").reset();
+                })
+                .catch((error) => {
+                    document.getElementById("status").innerText = "Erro ao salvar: " + error.message;
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Resposta de Cotação - Fornecedor</title>
+</head>
+<body>
+    <h2>Formulário de Cotação - Fornecedor</h2>
+    <form id="cotacaoForm">
+        <label>Nome do Fornecedor:<br><input type="text" id="fornecedor" required></label><br><br>
+        <label>CNPJ:<br><input type="text" id="cnpj" required></label><br><br>
+        <label>Nome do Vendedor:<br><input type="text" id="vendedor" required></label><br><br>
+        <label>WhatsApp do Vendedor:<br><input type="text" id="fone" required></label><br><br>
+        <label>Email:<br><input type="email" id="email" required></label><br><br>
+        <label>Data de Entrega:<br><input type="date" id="data_entrega" required></label><br><br>
+        <label>Prazo de Pagamento:<br><input type="text" id="prazo" required></label><br><br>
+        <label>Nome do Produto:<br><input type="text" id="produto_nome" required></label><br><br>
+        <label>Embalagem:<br><input type="text" id="produto_embalagem" required></label><br><br>
+        <label>Marca:<br><input type="text" id="produto_marca" required></label><br><br>
+        <label>Quantidade:<br><input type="number" id="produto_qtd" required></label><br><br>
+        <label>Valor Unitário:<br><input type="number" step="0.01" id="produto_valor" required></label><br><br>
+
+        <button type="submit">Enviar Cotação</button>
+    </form>
+
+    <p id="status"></p>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        // CONFIGURAÇÃO DO FIREBASE
+        var firebaseConfig = {
+            apiKey: "AIzaSyDxxxxxxx-xxxxxxxxxxxxxxxxxx",
+            authDomain: "cotacoes---konect.firebaseapp.com",
+            databaseURL: "https://cotacoes---konect-default-rtdb.firebaseio.com",
+            projectId: "cotacoes---konect",
+            storageBucket: "cotacoes---konect.appspot.com",
+            messagingSenderId: "123456789000",
+            appId: "1:123456789000:web:abcdefg1234567"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+        // Enviar formulário
+        document.getElementById("cotacaoForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            var cotacao = {
+                data: new Date().toISOString().split('T')[0],
+                fornecedor: document.getElementById("fornecedor").value,
+                cnpj: document.getElementById("cnpj").value,
+                vendedor: document.getElementById("vendedor").value,
+                fone: document.getElementById("fone").value,
+                email: document.getElementById("email").value,
+                data_entrega: document.getElementById("data_entrega").value,
+                prazo_pagamento: document.getElementById("prazo").value,
+                produto: {
+                    nome: document.getElementById("produto_nome").value,
+                    embalagem: document.getElementById("produto_embalagem").value,
+                    marca: document.getElementById("produto_marca").value,
+                    quantidade: document.getElementById("produto_qtd").value,
+                    valor: document.getElementById("produto_valor").value
+                }
+            };
+
+            database.ref("cotacoes").push(cotacao)
+                .then(() => {
+                    document.getElementById("status").innerText = "Cotação enviada com sucesso!";
+                    document.getElementById("cotacaoForm").reset();
+                })
+                .catch((error) => {
+                    document.getElementById("status").innerText = "Erro ao enviar: " + error.message;
+                });
+        });
+    </script>
+</body>
+</html>
